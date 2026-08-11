@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research & Media - Paragon Medical Education Group</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo">Paragon Medical Education Group</div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="classes.html">Classes</a></li>
+                    <li><a href="research.html">Research</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Research & Media</h1>
+                <p>Advancing Medical Education Through Research and Resources</p>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container">
+                <h2>Research & Education Resources</h2>
+                <p>Paragon Medical Education Group is committed to advancing the field of emergency medical services through research, innovation, and the dissemination of evidence-based educational practices.</p>
+
+                <h2>Research Initiatives</h2>
+                <div class="research-section">
+                    <h3>Evidence-Based Curriculum Development</h3>
+                    <p>Our faculty continuously researches and develops curriculum based on the latest evidence in EMS best practices, trauma care, and healthcare education methodologies.</p>
+
+                    <h3>Training Effectiveness Studies</h3>
+                    <p>We conduct ongoing research to measure the effectiveness of our training programs and ensure our students are prepared for real-world challenges.</p>
+
+                    <h3>Professional Literature</h3>
+                    <p>Our faculty contribute to medical and educational literature, sharing knowledge and innovations with the broader healthcare education community.</p>
+
+                    <h3>Continuing Education in EMS</h3>
+                    <p>Research-based professional development programs keep healthcare professionals current with the latest advances in emergency medical services and care protocols.</p>
+                </div>
+
+                <h2>Educational Resources</h2>
+                <div class="resources-grid">
+                    <div class="resource-card">
+                        <h3>Training Materials</h3>
+                        <p>Comprehensive educational materials developed by our expert faculty for use in EMS training and professional development.</p>
+                    </div>
+
+                    <div class="resource-card">
+                        <h3>Industry Best Practices</h3>
+                        <p>Guidance and standards based on research and real-world experience in emergency medical services and trauma care.</p>
+                    </div>
+
+                    <div class="resource-card">
+                        <h3>Professional Development</h3>
+                        <p>Resources for EMS professionals and instructors to advance their knowledge and enhance their teaching capabilities.</p>
+                    </div>
+                </div>
+
+                <h2>Media & Presentations</h2>
+                <p>Paragon Medical Education Group faculty and leadership regularly present at industry conferences, contribute to educational publications, and share our research and innovations with the healthcare education community.</p>
+
+                <h2>Learn More</h2>
+                <p>For inquiries about our research initiatives, educational resources, or collaboration opportunities, please contact us.</p>
+                <a href="contact.html" class="btn btn-primary">Get in Touch</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Paragon Medical Education Group. All rights reserved.</p>
+            <p>170 Hickory Lake Road Eads, TN 38028 | 901-466-6367</p>
+        </div>
+    </footer>
+</body>
+</html>
