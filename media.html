@@ -58,10 +58,10 @@
     <header>
         <nav class="navbar">
             <div class="container">
-                <<div class="logo-section">
-    <img src="images/PARAGON_LOGO_BMP.bmp" alt="Paragon Medical Education Group" class="logo-img">
-    <div class="logo">Paragon Medical Education Group</div>
-</div>
+                <div class="logo-section">
+                    <img src="images/PARAGON_LOGO_BMP.bmp" alt="Paragon Medical Education Group" class="logo-img">
+                    <div class="logo">Paragon Medical Education Group</div>
+                </div>
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
                     <li><a href="about.html">About</a></li>
@@ -110,56 +110,22 @@
     <script>
         async function loadPodcastFeed() {
             try {
-                // Try multiple CORS proxies and direct approaches
                 const feedUrl = 'https://www.disasterpodcast.com/feed';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(feedUrl);
                 
-                // Try with different proxy services
-                const proxies = [
-                    'https://corsproxy.io/?' + encodeURIComponent(feedUrl),
-                    'https://api.allorigins.win/get?url=' + encodeURIComponent(feedUrl),
-                    feedUrl // Try direct fetch as last resort
-                ];
+                const response = await fetch(proxyUrl);
+                const text = await response.text();
                 
-                let success = false;
-                let xmlDoc = null;
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, 'text/xml');
                 
-                for (const proxy of proxies) {
-                    try {
-                        const response = await fetch(proxy);
-                        let text;
-                        
-                        if (proxy.includes('allorigins')) {
-                            const data = await response.json();
-                            text = data.contents;
-                        } else {
-                            text = await response.text();
-                        }
-                        
-                        const parser = new DOMParser();
-                        xmlDoc = parser.parseFromString(text, 'text/xml');
-                        
-                        if (xmlDoc.getElementsByTagName('parsererror').length === 0 && 
-                            xmlDoc.getElementsByTagName('item').length > 0) {
-                            success = true;
-                            break;
-                        }
-                    } catch (e) {
-                        continue;
-                    }
-                }
-                
-                if (!success || !xmlDoc) {
-                    throw new Error('Could not parse feed');
+                if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                    throw new Error('Parse error');
                 }
                 
                 const items = xmlDoc.getElementsByTagName('item');
                 let html = '';
                 
-                if (items.length === 0) {
-                    throw new Error('No episodes found');
-                }
-                
-                // Show latest 10 episodes
                 for (let i = 0; i < Math.min(10, items.length); i++) {
                     const item = items[i];
                     const title = item.getElementsByTagName('title')[0]?.textContent || 'Episode';
@@ -167,21 +133,9 @@
                     const link = item.getElementsByTagName('link')[0]?.textContent || '#';
                     const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
                     
-                    // Strip HTML from description
-                    const plainDescription = description
-                        .replace(/<[^>]*>/g, '')
-                        .replace(/&nbsp;/g, ' ')
-                        .replace(/&lt;/g, '<')
-                        .replace(/&gt;/g, '>')
-                        .replace(/&amp;/g, '&')
-                        .substring(0, 250);
-                    
+                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 250);
                     const dateObj = new Date(pubDate);
-                    const formattedDate = dateObj.toLocaleDateString('en-US', { 
-                        year: 'numeric', 
-                        month: 'long', 
-                        day: 'numeric' 
-                    });
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
                     
                     html += `
                         <div class="podcast-episode">
@@ -195,7 +149,18 @@
                 
                 document.getElementById('podcast-feed').innerHTML = html;
             } catch (error) {
-                console.error('Error loading feed:', error);
                 document.getElementById('podcast-feed').innerHTML = `
                     <p>Visit <a href="https://www.disasterpodcast.com" target="_blank"><strong>disasterpodcast.com</strong></a> to listen to the latest episodes.</p>
-                    <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training
+                    <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training strategies.</p>
+                `;
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadPodcastFeed);
+        } else {
+            loadPodcastFeed();
+        }
+    </script>
+</body>
+</html>
