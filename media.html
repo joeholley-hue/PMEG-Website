@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media & Podcasts - Paragon Medical Education Group</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .podcast-feed {
+            background-color: #f9f9f9;
+            padding: 2rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .podcast-episode {
+            background-color: white;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #0544A4;
+            border-radius: 4px;
+        }
+        
+        .podcast-episode h3 {
+            color: #0544A4;
+            margin-bottom: 0.5rem;
+        }
+        
+        .podcast-episode p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .podcast-episode a {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.5rem 1rem;
+            background-color: #0544A4;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+        
+        .podcast-episode a:hover {
+            background-color: #033878;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <div class="logo-section">
+                    <div class="logo">Paragon Medical Education Group</div>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="media.html">Media</a></li>
+                    <li><a href="research.html">Research</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Media & Podcasts</h1>
+                <p>Featured Discussions in Emergency Medical Education</p>
+            </div>
+        </section>
+
+        <section class="content">
+            <div class="container">
+                <h2>Disaster Podcast</h2>
+                <p>Stay informed with the latest episodes from Disaster Podcast, featuring insights on emergency response, mass casualty management, and crisis training.</p>
+
+                <div class="podcast-feed" id="podcast-feed">
+                    <div class="loading">Loading podcast episodes...</div>
+                </div>
+
+                <h2>About Our Media</h2>
+                <p>Paragon Medical Education Group actively participates in discussions and provides expert commentary on emergency medical services, disaster preparedness, and healthcare training. Our faculty regularly contributes to industry podcasts and media outlets to share knowledge and best practices with the broader EMS community.</p>
+
+                <h2>Connect With Us</h2>
+                <p>For media inquiries, interview requests, or to discuss podcast topics related to EMS education and training, contact us at <a href="mailto:contact@paragonmedicalgroup.com">contact@paragonmedicalgroup.com</a> or call <a href="tel:901-466-6367">901-466-6367</a></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Paragon Medical Education Group. All rights reserved.</p>
+            <p>170 Hickory Lake Road Eads, TN 38028 | 901-466-6367</p>
+        </div>
+    </footer>
+
+    <script>
+        // Fetch and display podcast feed from Disaster Podcast
+        async function loadPodcastFeed() {
+            try {
+                const feedUrl = 'https://www.disasterpodcast.com/feed';
+                const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(feedUrl);
+                
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+                const xmlText = data.contents;
+                
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+                
+                // Check for parsing errors
+                if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                    document.getElementById('podcast-feed').innerHTML = '<p>Unable to load podcast feed at this time. Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a> directly.</p>';
+                    return;
+                }
+                
+                const items = xmlDoc.getElementsByTagName('item');
+                let html = '';
+                
+                // Show latest 5 episodes
+                for (let i = 0; i < Math.min(5, items.length); i++) {
+                    const item = items[i];
+                    const title = item.getElementsByTagName('title')[0]?.textContent || 'Episode';
+                    const description = item.getElementsByTagName('description')[0]?.textContent || '';
+                    const link = item.getElementsByTagName('link')[0]?.textContent || '#';
+                    const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
+                    
+                    // Strip HTML from description
+                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 200) + '...';
+                    
+                    html += `
+                        <div class="podcast-episode">
+                            <h3>${title}</h3>
+                            <p><strong>Published:</strong> ${new Date(pubDate).toLocaleDateString()}</p>
+                            <p>${plainDescription}</p>
+                            <a href="${link}" target="_blank">Listen Now</a>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('podcast-feed').innerHTML = html;
+            } catch (error) {
+                console.error('Error loading feed:', error);
+                document.getElementById('podcast-feed').innerHTML = '<p>Unable to load podcast feed at this time. Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a> directly for the latest episodes.</p>';
+            }
+        }
+        
+        // Load feed when page loads
+        window.addEventListener('load', loadPodcastFeed);
+    </script>
+</body>
+</html>
