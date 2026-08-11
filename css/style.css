@@ -505,3 +505,50 @@ footer p {
         font-size: 0.9rem;
     }
 }
+/* Logo and Header */
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-img {
+    height: 50px;
+    width: auto;
+}
+
+/* Hero with background image */
+.hero-image {
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.hero-overlay {
+    background: rgba(0, 0, 0, 0.4);
+    padding: 5rem 0;
+}
+
+/* Service Images */
+.service-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px 8px 0 0;
+    margin: -2rem -2rem 1rem -2rem;
+}
+
+.service-card {
+    overflow: hidden;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .logo-img {
+        height: 40px;
+    }
+    
+    .logo {
+        font-size: 1rem;
+    }
+}
