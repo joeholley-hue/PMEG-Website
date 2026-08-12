@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Research & Resources - Paragon Medical Education Group</title>
+    <title>Media & Podcasts - Paragon Medical Education Group</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -11,8 +11,8 @@
         <nav class="navbar">
             <div class="container">
                 <div class="logo-section">
-                    <img src="images/PMEG_small_logo.JPG" alt="Paragon Medical Education Group" class="logo-img">
-                    <div class="logo">Paragon Medical Education</div>
+                    <img src="images/PMEG small logo.JPG" alt="Paragon Medical Education Group" class="logo-img">
+                    <div class="logo">Paragon Medical Education Group</div>
                 </div>
                 <ul class="nav-links">
                     <li><a href="index.html">Home</a></li>
@@ -28,11 +28,11 @@
 
     <main>
         <section class="hero">
-            <div class="hero-image" style="background-image: url('images/PMEG_Pics__1_.jpg');">
+            <div class="hero-image" style="background-image: url('images/PMEG Pics (4).jpg');">
                 <div class="hero-overlay">
                     <div class="container">
-                        <h1>Research & Resources</h1>
-                        <p>Advancing Medical Education Through Evidence-Based Practice</p>
+                        <h1>Media & Podcasts</h1>
+                        <p>Featured Discussions in Emergency Medical Education</p>
                     </div>
                 </div>
             </div>
@@ -40,44 +40,23 @@
 
         <section class="content">
             <div class="container">
-                <h2>Research & Education Resources</h2>
-                <p>Paragon Medical Education Group is committed to advancing the field of emergency medical services through research, innovation, and the dissemination of evidence-based educational practices.</p>
-
-                <h2>Research Initiatives</h2>
-                <div class="research-section">
-                    <h3>Evidence-Based Curriculum Development</h3>
-                    <p>Our faculty continuously researches and develops curriculum based on the latest evidence in EMS best practices, trauma care, and healthcare education methodologies.</p>
-
-                    <h3>Training Effectiveness Studies</h3>
-                    <p>We conduct ongoing research to measure the effectiveness of our training programs and ensure our students are prepared for real-world challenges.</p>
-
-                    <h3>Professional Literature</h3>
-                    <p>Our faculty contribute to medical and educational literature, sharing knowledge and innovations with the broader healthcare education community.</p>
-
-                    <h3>Continuing Education in EMS</h3>
-                    <p>Research-based professional development programs keep healthcare professionals current with the latest advances in emergency medical services and care protocols.</p>
+                <h2>Disaster Podcast</h2>
+                
+                <div class="podcast-logo">
+                    <img src="images/DisasterPodcast_just_logo-300x..." alt="Disaster Podcast">
                 </div>
 
-                <h2>Educational Resources</h2>
-                <div class="resources-grid">
-                    <div class="resource-card">
-                        <h3>Training Materials</h3>
-                        <p>Comprehensive educational materials developed by our expert faculty for use in EMS training and professional development.</p>
-                    </div>
+                <p>Stay informed with the latest episodes from Disaster Podcast, featuring insights on emergency response, mass casualty management, and crisis training.</p>
 
-                    <div class="resource-card">
-                        <h3>Industry Best Practices</h3>
-                        <p>Guidance and standards based on research and real-world experience in emergency medical services and trauma care.</p>
-                    </div>
-
-                    <div class="resource-card">
-                        <h3>Professional Development</h3>
-                        <p>Resources for EMS professionals and instructors to advance their knowledge and enhance their teaching capabilities.</p>
-                    </div>
+                <div class="podcast-feed" id="podcast-feed">
+                    <div class="loading">Loading podcast episodes...</div>
                 </div>
 
-                <h2>Get in Touch</h2>
-                <p>For inquiries about our research initiatives, educational resources, or collaboration opportunities, please contact us at <a href="mailto:contact@paragonmedicalgroup.com">contact@paragonmedicalgroup.com</a> or call <a href="tel:901-466-6367">901-466-6367</a></p>
+                <h2>About Our Media</h2>
+                <p>Paragon Medical Education Group actively participates in discussions and provides expert commentary on emergency medical services, disaster preparedness, and healthcare training. Our faculty regularly contributes to industry podcasts and media outlets to share knowledge and best practices with the broader EMS community.</p>
+
+                <h2>Connect With Us</h2>
+                <p>For media inquiries, interview requests, or to discuss podcast topics related to EMS education and training, contact us at <a href="mailto:contact@paragonmedicalgroup.com">contact@paragonmedicalgroup.com</a> or call <a href="tel:901-466-6367">901-466-6367</a></p>
             </div>
         </section>
     </main>
@@ -88,5 +67,61 @@
             <p>170 Hickory Lake Road Eads, TN 38028 | 901-466-6367</p>
         </div>
     </footer>
+
+    <script>
+        async function loadPodcastFeed() {
+            try {
+                const feedUrl = 'https://www.disasterpodcast.com/feed';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(feedUrl);
+                
+                const response = await fetch(proxyUrl);
+                const text = await response.text();
+                
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, 'text/xml');
+                
+                if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                    throw new Error('Parse error');
+                }
+                
+                const items = xmlDoc.getElementsByTagName('item');
+                let html = '';
+                
+                for (let i = 0; i < Math.min(10, items.length); i++) {
+                    const item = items[i];
+                    const title = item.getElementsByTagName('title')[0]?.textContent || 'Episode';
+                    const description = item.getElementsByTagName('description')[0]?.textContent || '';
+                    const link = item.getElementsByTagName('link')[0]?.textContent || '#';
+                    const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
+                    
+                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 250);
+                    const dateObj = new Date(pubDate);
+                    const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    
+                    html += `
+                        <div class="podcast-episode">
+                            <h3>${title}</h3>
+                            <p><strong>Published:</strong> ${formattedDate}</p>
+                            <p>${plainDescription}</p>
+                            <a href="${link}" target="_blank">Listen Now →</a>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('podcast-feed').innerHTML = html;
+            } catch (error) {
+                document.getElementById('podcast-feed').innerHTML = `
+                    <p>Visit <a href="https://www.disasterpodcast.com" target="_blank"><strong>disasterpodcast.com</strong></a> to listen to the latest episodes.</p>
+                    <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training strategies.</p>
+                `;
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadPodcastFeed);
+        } else {
+            loadPodcastFeed();
+        }
+    </script>
 </body>
 </html>
