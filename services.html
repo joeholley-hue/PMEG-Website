@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Services - Paragon Medical Education Group</title>
+    <title>Media & Podcasts - Paragon Medical Education Group</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -28,11 +28,11 @@
 
     <main>
         <section class="hero">
-            <div class="hero-image" style="background-image: url('images/PMEG Pics (3).jpg');">
+            <div class="hero-image" style="background-image: url('images/PMEG Pics (4).jpg');">
                 <div class="hero-overlay">
                     <div class="container">
-                        <h1>Our Services</h1>
-                        <p>Customized Premium Education Solutions</p>
+                        <h1>Media & Podcasts</h1>
+                        <p>Featured Discussions in Emergency Medical Education</p>
                     </div>
                 </div>
             </div>
@@ -40,57 +40,32 @@
 
         <section class="content">
             <div class="container">
-                <h2>Comprehensive EMS Education Solutions</h2>
-                <p>Paragon Medical Education Group offers comprehensive, customized training programs designed to meet the specific needs of healthcare professionals and EMS organizations.</p>
+                <h2>Disaster Podcast</h2>
+                
+                <div class="podcast-logo">
+                    <img src="images/DisasterPodcast_just_logo-300x300.jpg" alt="Disaster Podcast">
+                </div>
 
-                <div class="services-grid">
-                    <div class="service-card">
-                        <img src="images/PMEG Pics (2).JPG" alt="Medical Training" class="service-image">
-                        <h3>Medical Training Programs</h3>
-                        <p>Comprehensive EMS education programs for healthcare professionals at all levels. Our hands-on approach ensures practical, real-world competency.</p>
-                    </div>
-                    
-                    <div class="service-card">
-                        <img src="images/PMEG Pics (3).jpg" alt="Mass Casualty" class="service-image">
-                        <h3>Mass Casualty Management</h3>
-                        <p>Specialized training in mass casualty incident management, disaster response, and large-scale emergency coordination with expert faculty guidance.</p>
-                    </div>
-                    
-                    <div class="service-card">
-                        <img src="images/PMEG Pics (1).jpg" alt="Trauma Care" class="service-image">
-                        <h3>Trauma Care Training</h3>
-                        <p>Advanced trauma care education including our world-renowned Cadaver training model for realistic, hands-on preparation.</p>
-                    </div>
+                <p>Stay informed with the latest episodes from Disaster Podcast, featuring insights on emergency response, mass casualty management, and crisis training.</p>
 
-                    <div class="service-card">
-                        <h3>Professional Development</h3>
-                        <p>Continuing education and professional development courses to advance your medical career and stay current with industry standards.</p>
-                    </div>
-
-                    <div class="service-card">
-                        <h3>Customized On-Site Training</h3>
-                        <p>We bring premium education to your location, customizing programs specifically to meet your organization's unique goals and requirements.</p>
-                    </div>
-
-                    <div class="service-card">
-                        <h3>Healthcare Discipline Specialization</h3>
-                        <p>Specialized training across a wide range of healthcare disciplines with award-winning faculty and proven instructional methods.</p>
+                <h2>Latest Episodes</h2>
+                <div class="podcast-feed" id="podcast-feed">
+                    <div class="podcast-episode">
+                        <p>Loading episodes from Disaster Podcast...</p>
                     </div>
                 </div>
 
-                <h2>Why Our Services Stand Out</h2>
-                <ul class="highlight-list">
-                    <li>Customized to meet your specific goals</li>
-                    <li>Delivered in any location and under any conditions</li>
-                    <li>Led by award-winning faculty mentors</li>
-                    <li>Real-world scenarios and practical training</li>
-                    <li>Flexible scheduling and formats</li>
-                    <li>Proven track record of excellence</li>
-                </ul>
+                <div style="background: #f0f7ff; padding: 2rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid #0544A4;">
+                    <h3>Can't see episodes?</h3>
+                    <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to the latest episodes directly.</p>
+                    <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training strategies.</p>
+                </div>
 
-                <h2>Ready to Get Started?</h2>
-                <p>Contact us to discuss your training needs and discover how Paragon Medical Education Group can provide the premium education your organization requires.</p>
-                <a href="contact.html" class="btn btn-primary">Contact Us Today</a>
+                <h2>About Our Media</h2>
+                <p>Paragon Medical Education Group actively participates in discussions and provides expert commentary on emergency medical services, disaster preparedness, and healthcare training. Our faculty regularly contributes to industry podcasts and media outlets to share knowledge and best practices with the broader EMS community.</p>
+
+                <h2>Connect With Us</h2>
+                <p>For media inquiries, interview requests, or to discuss podcast topics related to EMS education and training, contact us at <a href="mailto:contact@paragonmedicalgroup.com">contact@paragonmedicalgroup.com</a> or call <a href="tel:901-466-6367">901-466-6367</a></p>
             </div>
         </section>
     </main>
@@ -101,5 +76,78 @@
             <p>170 Hickory Lake Road Eads, TN 38028 | 901-466-6367</p>
         </div>
     </footer>
+
+    <script>
+        async function loadPodcastFeed() {
+            try {
+                const feedUrl = 'https://www.disasterpodcast.com/feed';
+                const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(feedUrl);
+                
+                const response = await fetch(proxyUrl, {
+                    headers: {
+                        'Accept': 'application/rss+xml, application/xml, text/xml'
+                    }
+                });
+                
+                if (!response.ok) throw new Error('Feed fetch failed');
+                
+                const text = await response.text();
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(text, 'text/xml');
+                
+                if (xmlDoc.getElementsByTagName('parsererror').length > 0) {
+                    throw new Error('Parse error');
+                }
+                
+                const items = xmlDoc.getElementsByTagName('item');
+                
+                if (items.length === 0) {
+                    throw new Error('No items found');
+                }
+                
+                let html = '';
+                
+                for (let i = 0; i < Math.min(8, items.length); i++) {
+                    const item = items[i];
+                    const title = item.getElementsByTagName('title')[0]?.textContent || 'Episode';
+                    const description = item.getElementsByTagName('description')[0]?.textContent || 'No description';
+                    const link = item.getElementsByTagName('link')[0]?.textContent || 'https://www.disasterpodcast.com';
+                    const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
+                    
+                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 150);
+                    
+                    let formattedDate = '';
+                    if (pubDate) {
+                        const dateObj = new Date(pubDate);
+                        formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    }
+                    
+                    html += `
+                        <div class="podcast-episode">
+                            <h3>${title}</h3>
+                            ${formattedDate ? `<p><strong>Published:</strong> ${formattedDate}</p>` : ''}
+                            <p>${plainDescription}${plainDescription.length > 140 ? '...' : ''}</p>
+                            <a href="${link}" target="_blank">Listen Now →</a>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('podcast-feed').innerHTML = html;
+            } catch (error) {
+                console.error('Podcast feed error:', error);
+                document.getElementById('podcast-feed').innerHTML = `
+                    <div class="podcast-episode">
+                        <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to the latest episodes.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadPodcastFeed);
+        } else {
+            loadPodcastFeed();
+        }
+    </script>
 </body>
 </html>
