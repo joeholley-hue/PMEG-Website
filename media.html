@@ -48,10 +48,9 @@
                 <p>Stay informed with the latest episodes from Disaster Podcast, featuring insights on emergency response, mass casualty management, and crisis training.</p>
 
                 <div class="rss-feed-box">
-                    <h4>📻 Subscribe to the RSS Feed</h4>
-                    <p>Get the latest episodes automatically. Copy this URL into your favorite podcast app:</p>
-                    <p style="word-break: break-all; color: #0544A4; font-family: monospace; font-size: 0.85rem; margin: 0.9rem 0;">https://www.disasterpodcast.com/feed</p>
-                    <a href="https://www.disasterpodcast.com/feed" target="_blank">Open RSS Feed →</a>
+                    <h3>📻 Subscribe to Disaster Podcast</h3>
+                    <p>Get the latest episodes delivered automatically to your favorite podcast app.</p>
+                    <a href="https://www.disasterpodcast.com/feed" class="btn btn-primary" target="_blank">Subscribe via RSS Feed</a>
                 </div>
 
                 <h2>Latest Episodes</h2>
@@ -62,9 +61,8 @@
                 </div>
 
                 <div style="background: #f0f7ff; padding: 1.8rem; border-radius: 8px; margin: 1.8rem 0; border-left: 4px solid #0544A4;">
-                    <h3>Listen Directly</h3>
-                    <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to all episodes.</p>
-                    <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training strategies.</p>
+                    <h3>Listen on Disaster Podcast</h3>
+                    <p>Visit <a href="https://www.disasterpodcast.com" target="_blank" style="color: #0544A4; font-weight: 600;">disasterpodcast.com</a> to browse all episodes, subscribe, and listen directly.</p>
                 </div>
 
                 <h2>About Our Media</h2>
@@ -115,45 +113,4 @@
                 
                 for (let i = 0; i < Math.min(8, items.length); i++) {
                     const item = items[i];
-                    const title = item.getElementsByTagName('title')[0]?.textContent || 'Episode';
-                    const description = item.getElementsByTagName('description')[0]?.textContent || 'No description';
-                    const link = item.getElementsByTagName('link')[0]?.textContent || 'https://www.disasterpodcast.com';
-                    const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
-                    
-                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 140);
-                    
-                    let formattedDate = '';
-                    if (pubDate) {
-                        const dateObj = new Date(pubDate);
-                        formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-                    }
-                    
-                    html += `
-                        <div class="podcast-episode">
-                            <h3>${title}</h3>
-                            ${formattedDate ? `<p><strong>${formattedDate}</strong></p>` : ''}
-                            <p>${plainDescription}${plainDescription.length > 135 ? '...' : ''}</p>
-                            <a href="${link}" target="_blank">Listen Now →</a>
-                        </div>
-                    `;
-                }
-                
-                document.getElementById('podcast-feed').innerHTML = html;
-            } catch (error) {
-                console.error('Podcast feed error:', error);
-                document.getElementById('podcast-feed').innerHTML = `
-                    <div class="podcast-episode">
-                        <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to the latest episodes.</p>
-                    </div>
-                `;
-            }
-        }
-        
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', loadPodcastFeed);
-        } else {
-            loadPodcastFeed();
-        }
-    </script>
-</body>
-</html>
+                    const title = item.getElementsByTagName('title')[0]?.t
