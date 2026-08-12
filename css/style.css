@@ -36,6 +36,17 @@ body {
     align-items: center;
 }
 
+.logo-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo-img {
+    height: 35px;
+    width: auto;
+}
+
 .logo {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.2rem;
@@ -328,3 +339,152 @@ main {
 
 /* Help List */
 .help-list {
+    list-style: none;
+    margin-left: 0;
+}
+
+.help-list li {
+    padding: 0.8rem 0;
+    padding-left: 2rem;
+    position: relative;
+    color: #555;
+}
+
+.help-list li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #0544A4;
+    font-weight: bold;
+}
+
+/* Highlight List */
+.highlight-list {
+    list-style: none;
+    margin-left: 0;
+    margin: 2rem 0;
+}
+
+.highlight-list li {
+    padding: 1rem 1.5rem;
+    margin-bottom: 0.8rem;
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    border-left: 4px solid #0544A4;
+    color: #555;
+    border-radius: 6px;
+}
+
+.highlight-list li:before {
+    content: "✓";
+    color: #ffd700;
+    font-weight: bold;
+    margin-right: 0.8rem;
+    font-size: 1.2rem;
+}
+
+/* Highlight Box */
+.highlight-box {
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    padding: 2.5rem;
+    border-radius: 12px;
+    border-left: 5px solid #0544A4;
+    margin: 2.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.highlight-box p {
+    margin-bottom: 1.5rem;
+    color: #333;
+    font-weight: 500;
+    line-height: 1.8;
+}
+
+.highlight-box p:last-child {
+    margin-bottom: 0;
+}
+
+/* Contact Info */
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+    margin: 2.5rem 0;
+}
+
+.contact-card {
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    padding: 2.5rem;
+    border-radius: 12px;
+    border-left: 5px solid #0544A4;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(5, 68, 164, 0.15);
+}
+
+.contact-card h3 {
+    color: #0544A4;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+.contact-card a {
+    color: #0544A4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.contact-card a:hover {
+    color: #ffd700;
+    text-decoration: underline;
+}
+
+/* Contact Methods */
+.contact-methods {
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    padding: 2.5rem;
+    border-radius: 12px;
+    border-left: 5px solid #0544A4;
+    margin: 2.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.contact-methods a {
+    color: #0544A4;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.contact-methods a:hover {
+    color: #ffd700;
+    text-decoration: underline;
+}
+
+/* Research Section */
+.research-section {
+    background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
+    padding: 2.5rem;
+    border-radius: 12px;
+    margin: 2.5rem 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.research-section h3 {
+    color: #0544A4;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.research-section h3:first-child {
+    margin-top: 0;
+}
+
+/* Resources Grid */
+.resources-grid {
+    display: grid;
