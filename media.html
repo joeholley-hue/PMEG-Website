@@ -48,8 +48,17 @@
 
                 <p>Stay informed with the latest episodes from Disaster Podcast, featuring insights on emergency response, mass casualty management, and crisis training.</p>
 
+                <h2>Latest Episodes</h2>
                 <div class="podcast-feed" id="podcast-feed">
-                    <div class="loading">Loading podcast episodes...</div>
+                    <div class="podcast-episode">
+                        <p>Loading episodes from Disaster Podcast...</p>
+                    </div>
+                </div>
+
+                <div style="background: #f0f7ff; padding: 2rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid #0544A4;">
+                    <h3>Can't see episodes?</h3>
+                    <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to the latest episodes directly.</p>
+                    <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training strategies.</p>
                 </div>
 
                 <h2>About Our Media</h2>
@@ -74,9 +83,15 @@
                 const feedUrl = 'https://www.disasterpodcast.com/feed';
                 const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(feedUrl);
                 
-                const response = await fetch(proxyUrl);
-                const text = await response.text();
+                const response = await fetch(proxyUrl, {
+                    headers: {
+                        'Accept': 'application/rss+xml, application/xml, text/xml'
+                    }
+                });
                 
+                if (!response.ok) throw new Error('Feed fetch failed');
+                
+                const text = await response.text();
                 const parser = new DOMParser();
                 const xmlDoc = parser.parseFromString(text, 'text/xml');
                 
@@ -85,24 +100,33 @@
                 }
                 
                 const items = xmlDoc.getElementsByTagName('item');
+                
+                if (items.length === 0) {
+                    throw new Error('No items found');
+                }
+                
                 let html = '';
                 
-                for (let i = 0; i < Math.min(10, items.length); i++) {
+                for (let i = 0; i < Math.min(8, items.length); i++) {
                     const item = items[i];
                     const title = item.getElementsByTagName('title')[0]?.textContent || 'Episode';
-                    const description = item.getElementsByTagName('description')[0]?.textContent || '';
-                    const link = item.getElementsByTagName('link')[0]?.textContent || '#';
+                    const description = item.getElementsByTagName('description')[0]?.textContent || 'No description';
+                    const link = item.getElementsByTagName('link')[0]?.textContent || 'https://www.disasterpodcast.com';
                     const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
                     
-                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 250);
-                    const dateObj = new Date(pubDate);
-                    const formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 150);
+                    
+                    let formattedDate = '';
+                    if (pubDate) {
+                        const dateObj = new Date(pubDate);
+                        formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                    }
                     
                     html += `
                         <div class="podcast-episode">
                             <h3>${title}</h3>
-                            <p><strong>Published:</strong> ${formattedDate}</p>
-                            <p>${plainDescription}</p>
+                            ${formattedDate ? `<p><strong>Published:</strong> ${formattedDate}</p>` : ''}
+                            <p>${plainDescription}${plainDescription.length > 140 ? '...' : ''}</p>
                             <a href="${link}" target="_blank">Listen Now →</a>
                         </div>
                     `;
@@ -110,9 +134,11 @@
                 
                 document.getElementById('podcast-feed').innerHTML = html;
             } catch (error) {
+                console.error('Podcast feed error:', error);
                 document.getElementById('podcast-feed').innerHTML = `
-                    <p>Visit <a href="https://www.disasterpodcast.com" target="_blank"><strong>disasterpodcast.com</strong></a> to listen to the latest episodes.</p>
-                    <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training strategies.</p>
+                    <div class="podcast-episode">
+                        <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to the latest episodes.</p>
+                    </div>
                 `;
             }
         }
