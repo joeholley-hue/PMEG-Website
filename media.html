@@ -5,6 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Media & Podcasts - Paragon Medical Education Group</title>
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .subscribe-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .subscribe-btn {
+            padding: 10px 18px;
+            background: #0544A4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+        .subscribe-btn:hover {
+            background: #033878;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(5, 68, 164, 0.3);
+        }
+        .copy-feedback {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #e8f5e9;
+            color: #2e7d32;
+            border-radius: 6px;
+            border-left: 4px solid #4caf50;
+        }
+        .copy-feedback.show {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -50,7 +88,13 @@
                 <div class="rss-feed-box">
                     <h3>📻 Subscribe to Disaster Podcast</h3>
                     <p>Get the latest episodes delivered automatically to your favorite podcast app.</p>
-                    <a href="https://www.disasterpodcast.com/feed" class="btn btn-primary" target="_blank">Subscribe via RSS Feed</a>
+                    <div class="subscribe-options">
+                        <a href="https://podcasts.apple.com/podcast/disaster-podcast/id1735793012" class="subscribe-btn" target="_blank">Apple Podcasts</a>
+                        <a href="https://open.spotify.com/show/disaster-podcast" class="subscribe-btn" target="_blank">Spotify</a>
+                        <a href="https://www.disasterpodcast.com/" class="subscribe-btn" target="_blank">Web Player</a>
+                        <button class="subscribe-btn" onclick="copyRSSFeed()">Copy RSS URL</button>
+                    </div>
+                    <div class="copy-feedback" id="copyFeedback">✓ RSS URL copied to clipboard!</div>
                 </div>
 
                 <h2>Latest Episodes</h2>
@@ -62,7 +106,7 @@
 
                 <div style="background: #f0f7ff; padding: 1.8rem; border-radius: 8px; margin: 1.8rem 0; border-left: 4px solid #0544A4;">
                     <h3>Listen on Disaster Podcast</h3>
-                    <p>Visit <a href="https://www.disasterpodcast.com" target="_blank" style="color: #0544A4; font-weight: 600;">disasterpodcast.com</a> to browse all episodes, subscribe, and listen directly.</p>
+                    <p>Visit <a href="https://www.disasterpodcast.com" target="_blank" style="color: #0544A4; font-weight: 600;">disasterpodcast.com</a> to browse all episodes and listen directly.</p>
                 </div>
 
                 <h2>About Our Media</h2>
@@ -82,6 +126,17 @@
     </footer>
 
     <script>
+        function copyRSSFeed() {
+            const rssUrl = 'https://www.disasterpodcast.com/feed';
+            navigator.clipboard.writeText(rssUrl).then(() => {
+                const feedback = document.getElementById('copyFeedback');
+                feedback.classList.add('show');
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 3000);
+            });
+        }
+
         async function loadPodcastFeed() {
             try {
                 const feedUrl = 'https://www.disasterpodcast.com/feed';
@@ -113,4 +168,29 @@
                 
                 for (let i = 0; i < Math.min(8, items.length); i++) {
                     const item = items[i];
-                    const title = item.getElementsByTagName('title')[0]?.t
+                    const title = item.getElementsByTagName('title')[0]?.textContent || 'Episode';
+                    const description = item.getElementsByTagName('description')[0]?.textContent || 'No description';
+                    const link = item.getElementsByTagName('link')[0]?.textContent || 'https://www.disasterpodcast.com';
+                    const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
+                    
+                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 140);
+                    
+                    let formattedDate = '';
+                    if (pubDate) {
+                        const dateObj = new Date(pubDate);
+                        formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+                    }
+                    
+                    html += `
+                        <div class="podcast-episode">
+                            <h3>${title}</h3>
+                            ${formattedDate ? `<p><strong>${formattedDate}</strong></p>` : ''}
+                            <p>${plainDescription}${plainDescription.length > 135 ? '...' : ''}</p>
+                            <a href="${link}" target="_blank">Listen Now →</a>
+                        </div>
+                    `;
+                }
+                
+                document.getElementById('podcast-feed').innerHTML = html;
+            } catch (error) {
+                console.error('Podcast feed error:',
