@@ -19,7 +19,6 @@
                     <li><a href="about.html">About</a></li>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="media.html">Media</a></li>
-                    <li><a href="research.html">Research</a></li>
                     <li><a href="contact.html">Contact</a></li>
                 </ul>
             </div>
@@ -48,6 +47,13 @@
 
                 <p>Stay informed with the latest episodes from Disaster Podcast, featuring insights on emergency response, mass casualty management, and crisis training.</p>
 
+                <div class="rss-feed-box">
+                    <h4>📻 Subscribe to the RSS Feed</h4>
+                    <p>Get the latest episodes automatically. Copy this URL into your favorite podcast app:</p>
+                    <p style="word-break: break-all; color: #0544A4; font-family: monospace; font-size: 0.85rem; margin: 0.9rem 0;">https://www.disasterpodcast.com/feed</p>
+                    <a href="https://www.disasterpodcast.com/feed" target="_blank">Open RSS Feed →</a>
+                </div>
+
                 <h2>Latest Episodes</h2>
                 <div class="podcast-feed" id="podcast-feed">
                     <div class="podcast-episode">
@@ -55,9 +61,9 @@
                     </div>
                 </div>
 
-                <div style="background: #f0f7ff; padding: 2rem; border-radius: 8px; margin: 2rem 0; border-left: 4px solid #0544A4;">
-                    <h3>Can't see episodes?</h3>
-                    <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to the latest episodes directly.</p>
+                <div style="background: #f0f7ff; padding: 1.8rem; border-radius: 8px; margin: 1.8rem 0; border-left: 4px solid #0544A4;">
+                    <h3>Listen Directly</h3>
+                    <p><strong>Visit <a href="https://www.disasterpodcast.com" target="_blank">disasterpodcast.com</a></strong> to listen to all episodes.</p>
                     <p>Featured topics include emergency response, mass casualty management, disaster preparedness, and crisis training strategies.</p>
                 </div>
 
@@ -114,19 +120,19 @@
                     const link = item.getElementsByTagName('link')[0]?.textContent || 'https://www.disasterpodcast.com';
                     const pubDate = item.getElementsByTagName('pubDate')[0]?.textContent || '';
                     
-                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 150);
+                    const plainDescription = description.replace(/<[^>]*>/g, '').substring(0, 140);
                     
                     let formattedDate = '';
                     if (pubDate) {
                         const dateObj = new Date(pubDate);
-                        formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+                        formattedDate = dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
                     }
                     
                     html += `
                         <div class="podcast-episode">
                             <h3>${title}</h3>
-                            ${formattedDate ? `<p><strong>Published:</strong> ${formattedDate}</p>` : ''}
-                            <p>${plainDescription}${plainDescription.length > 140 ? '...' : ''}</p>
+                            ${formattedDate ? `<p><strong>${formattedDate}</strong></p>` : ''}
+                            <p>${plainDescription}${plainDescription.length > 135 ? '...' : ''}</p>
                             <a href="${link}" target="_blank">Listen Now →</a>
                         </div>
                     `;
